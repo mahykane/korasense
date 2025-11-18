@@ -4,14 +4,5 @@
   "installCommand": "npm install",
   "devCommand": "next dev",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
-  "regions": ["iad1"],
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "@clerk_publishable_key",
-    "CLERK_SECRET_KEY": "@clerk_secret_key",
-    "QDRANT_URL": "@qdrant_url",
-    "QDRANT_API_KEY": "@qdrant_api_key",
-    "GEMINI_API_KEY": "@gemini_api_key",
-    "EXTERNAL_API_SECRET": "@external_api_secret"
-  }
+  "regions": ["iad1"]
 }

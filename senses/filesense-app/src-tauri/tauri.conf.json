@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Opsense Knowledge Sync",
+  "productName": "KORASENSE Knowledge Sync",
   "version": "1.0.0",
-  "identifier": "com.opsense.filesense",
+  "identifier": "com.KORASENSE.filesense",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -16,7 +16,7 @@
   "app": {
     "windows": [
       {
-        "title": "Opsense FileSense",
+        "title": "KORASENSE FileSense",
         "width": 900,
         "height": 700,
         "resizable": true,

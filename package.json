@@ -1,5 +1,5 @@
 {
-  "name": "opsense-knowledge-app",
+  "name": "KORASENSE-knowledge-app",
   "version": "1.0.0",
   "description": "Multimodal knowledge management platform for unified company knowledge",
   "main": "index.js",

@@ -8,7 +8,7 @@ export default function DemoPage() {
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold mb-2">Opsense Risk Copilot - Demo</h1>
+                <h1 className="text-3xl font-bold mb-2">KORASENSE Risk Copilot - Demo</h1>
                 <p className="text-gray-600 dark:text-gray-400">
                   Try out the risk copilot with pre-loaded demo data. Read-only mode.
                 </p>
@@ -36,7 +36,7 @@ export default function DemoPage() {
             </div>
           </div>
 
-          <DemoConsole />
+          <DemoConsole tenantSlug="demo-tenant" />
         </div>
       </div>
     </div>

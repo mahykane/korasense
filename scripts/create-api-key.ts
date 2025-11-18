@@ -38,7 +38,7 @@ async function main() {
   }
 
   // Generate a random API key
-  const apiKey = `opsense_${randomBytes(32).toString('hex')}`;
+  const apiKey = `KORASENSE_${randomBytes(32).toString('hex')}`;
 
   // Create the external API key
   const externalKey = await prisma.externalApiKey.create({

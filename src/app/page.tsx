@@ -610,7 +610,7 @@ export default async function HomePage() {
         textAlign: 'center'
       }}>
         <p style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)' }}>
-          © 2025 Opsense Knowledge App. Built with ❤️ using Next.js, Gemini AI, and Qdrant.
+          © 2025 KORASENSE Knowledge App. Built with ❤️ using Next.js, Gemini AI, and Qdrant.
         </p>
       </div>
     </div>

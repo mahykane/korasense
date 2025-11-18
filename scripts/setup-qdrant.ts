@@ -1,5 +1,5 @@
 /**
- * Script to set up Qdrant collection for Opsense
+ * Script to set up Qdrant collection for KORASENSE
  * 
  * Usage: npx tsx scripts/setup-qdrant.ts
  */
@@ -29,7 +29,7 @@ async function main() {
     if (shouldRecreate) {
       console.log('🗑️  Deleting existing collection...');
       try {
-        await fetch(`${process.env.QDRANT_URL}/collections/${process.env.QDRANT_COLLECTION_NAME || 'opsense_chunks'}`, {
+        await fetch(`${process.env.QDRANT_URL}/collections/${process.env.QDRANT_COLLECTION_NAME || 'KORASENSE_chunks'}`, {
           method: 'DELETE',
           headers: {
             'api-key': process.env.QDRANT_API_KEY || '',
@@ -41,7 +41,7 @@ async function main() {
       }
     }
     
-    console.log('📦 Ensuring collection "opsense_chunks" exists...');
+    console.log('📦 Ensuring collection "KORASENSE_chunks" exists...');
     
     // Get vector size from environment variable
     const useLocalEmbeddings = process.env.USE_LOCAL_EMBEDDINGS === 'true';
@@ -55,7 +55,7 @@ async function main() {
     
     console.log('✅ Collection ready!');
     console.log('\nCollection Info:');
-    console.log('  Name: opsense_chunks');
+    console.log('  Name: KORASENSE_chunks');
     console.log(`  Vector size: ${vectorSize} (${modelInfo})`);
     console.log('  Distance: Cosine');
     console.log('  Status: Ready');

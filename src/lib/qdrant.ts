@@ -32,7 +32,7 @@ class QdrantClient {
   constructor() {
     this.url = process.env.QDRANT_URL || '';
     this.apiKey = process.env.QDRANT_API_KEY || '';
-    this.collectionName = process.env.QDRANT_COLLECTION_NAME || 'opsense_chunks';
+    this.collectionName = process.env.QDRANT_COLLECTION_NAME || 'KORASENSE_chunks';
 
     if (!this.url || !this.apiKey) {
       console.warn('Qdrant credentials not configured');

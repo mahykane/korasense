@@ -57,7 +57,7 @@ export default function Navigation({ user }: NavigationProps) {
               }}
             >
               <span style={{ fontSize: '1.5rem' }}>🔷</span>
-              <span>OPSENSE</span>
+              <span>KORASENSE</span>
             </Link>
             
             <div className="hidden md:flex" style={{ 

@@ -1,8 +1,8 @@
 [package]
-name = "opsense-knowledge-sync"
+name = "KORASENSE-knowledge-sync"
 version = "0.1.0"
 edition = "2021"
-description = "Automatic document ingestion for Opsense Knowledge App"
+description = "Automatic document ingestion for KORASENSE Knowledge App"
 
 [build-dependencies]
 tauri-build = { version = "2.0", features = [] }

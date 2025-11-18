@@ -52,6 +52,8 @@ function App() {
     if (!store) return;
     
     async function loadConfig() {
+      if (!store) return; // Additional check for TypeScript
+      
       try {
         const savedConfig = await store.get<Config>('config');
         if (savedConfig) {
@@ -251,7 +253,7 @@ function App() {
     return (
       <div className="app-container">
         <div className="app-header">
-          <h1>📚 Opsense Knowledge Sync</h1>
+          <h1>📚 KORASENSE Knowledge Sync</h1>
           <p>Connect to your knowledge base</p>
         </div>
         
@@ -259,7 +261,7 @@ function App() {
           <div className="card">
             <h3 className="card-title">Authentication</h3>
             <p className="card-subtitle">
-              Enter your backend URL and API key to connect to your Opsense knowledge base.
+              Enter your backend URL and API key to connect to your KORASENSE knowledge base.
             </p>
 
             <div className="form-group">
@@ -282,7 +284,7 @@ function App() {
                 type="password"
                 value={authToken}
                 onChange={(e) => setAuthToken(e.target.value)}
-                placeholder="opsense_..."
+                placeholder="opsense..."
               />
             </div>
 
@@ -312,7 +314,7 @@ function App() {
   return (
     <div className="app-container">
       <div className="app-header">
-        <h1>📚 Opsense Knowledge Sync</h1>
+        <h1>📚 KORASENSE Knowledge Sync</h1>
         <p>Tenant: {config?.tenant_slug || 'Unknown'}</p>
       </div>
 

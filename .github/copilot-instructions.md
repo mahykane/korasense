@@ -1,7 +1,7 @@
-# Opsense Knowledge App - Copilot Instructions
+# KORASENSE Knowledge App - Copilot Instructions
 
 ## Project Overview
-Opsense Knowledge App is a multimodal, agentic knowledge management platform that allows employees to ingest any type of data and ask complex questions to unified company knowledge. Built with Next.js 14+, TypeScript, Prisma, Qdrant, and Gemini AI.
+KORASENSE Knowledge App is a multimodal, agentic knowledge management platform that allows employees to ingest any type of data and ask complex questions to unified company knowledge. Built with Next.js 14+, TypeScript, Prisma, Qdrant, and Gemini AI.
 
 ## Tech Stack
 - Framework: Next.js 14+ (App Router, TypeScript, React 18)

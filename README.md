@@ -1,4 +1,4 @@
-# Opsense Knowledge App
+# KORASENSE Knowledge App
 
 An intelligent, multimodal knowledge management platform that allows employees to ingest any type of data and ask complex questions to unified company knowledge. Built with Next.js 14+, TypeScript, Prisma, Qdrant, and Gemini AI.
 
@@ -30,7 +30,7 @@ An intelligent, multimodal knowledge management platform that allows employees t
 ## 🏗️ Project Structure
 
 ```
-opsense/
+KORASENSE/
 ├── src/
 │   ├── app/                      # Next.js App Router
 │   │   ├── (protected)/         # Authenticated routes
@@ -84,7 +84,7 @@ opsense/
 ### 1. Clone and Install
 
 ```bash
-cd /Users/mahykane/Projects/OPSENSE
+cd /Users/mahykane/Projects/KORASENSE
 npm install
 ```
 
@@ -94,7 +94,7 @@ Create `.env` file:
 
 ```env
 # Database
-DATABASE_URL="postgresql://user:password@localhost:5432/opsense"
+DATABASE_URL="postgresql://user:password@localhost:5432/KORASENSE"
 
 # Clerk Authentication
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
@@ -105,7 +105,7 @@ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 # Qdrant Vector Database
 QDRANT_URL=https://xxx.cloud.qdrant.io
 QDRANT_API_KEY=your-qdrant-api-key
-QDRANT_COLLECTION_NAME=opsense_chunks
+QDRANT_COLLECTION_NAME=KORASENSE_chunks
 
 # Google Gemini AI
 GEMINI_API_KEY=your-gemini-api-key
@@ -188,7 +188,7 @@ cargo build --release
 
 ### Configure
 
-Create `~/.opsense_filesense.toml`:
+Create `~/.KORASENSE_filesense.toml`:
 
 ```toml
 tenant_slug = "your-tenant-slug"

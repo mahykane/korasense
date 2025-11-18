@@ -1,7 +1,7 @@
 {
-  "name": "opsense-filesense",
+  "name": "KORASENSE-filesense",
   "version": "1.0.0",
-  "description": "Opsense FileSense Desktop App",
+  "description": "KORASENSE FileSense Desktop App",
   "type": "module",
   "scripts": {
     "dev": "vite",

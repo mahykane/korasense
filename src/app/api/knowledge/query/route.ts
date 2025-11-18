@@ -73,9 +73,9 @@ export async function POST(request: NextRequest) {
       session_id: 'sessionId' in result ? result.sessionId : `session_${Date.now()}`,
       question,
       answer: result.answer,
-      quality_score: 'qualityScore' in result ? result.qualityScore : result.qualityScore,
+      quality_score: result.qualityScore,
       trace: result.trace,
-      total_latency_ms: 'totalLatencyMs' in result ? result.totalLatencyMs : result.totalLatencyMs,
+      total_latency_ms: result.totalLatencyMs,
     });
   } catch (error: any) {
     console.error('Knowledge query error:', error);

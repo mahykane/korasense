@@ -3,6 +3,24 @@
 version = 4
 
 [[package]]
+name = "KORASENSE-knowledge-sync"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "notify",
+ "reqwest 0.11.27",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-os",
+ "tauri-plugin-shell",
+ "tauri-plugin-store",
+ "tokio",
+]
+
+[[package]]
 name = "adler2"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2616,24 +2634,6 @@ dependencies = [
  "libc",
  "pkg-config",
  "vcpkg",
-]
-
-[[package]]
-name = "opsense-knowledge-sync"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "notify",
- "reqwest 0.11.27",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-os",
- "tauri-plugin-shell",
- "tauri-plugin-store",
- "tokio",
 ]
 
 [[package]]

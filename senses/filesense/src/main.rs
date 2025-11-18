@@ -8,7 +8,7 @@ use std::sync::mpsc::channel;
 
 #[derive(Parser)]
 #[command(name = "filesense")]
-#[command(about = "Opsense FileSense - Watch folders and ingest documents")]
+#[command(about = "KORASENSE FileSense - Watch folders and ingest documents")]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -57,10 +57,10 @@ async fn main() -> Result<()> {
 fn load_config() -> Result<Config> {
     let config_path = dirs::home_dir()
         .context("Could not find home directory")?
-        .join(".opsense_filesense.toml");
+        .join(".KORASENSE_filesense.toml");
 
     let config_str = fs::read_to_string(&config_path)
-        .context("Could not read config file at ~/.opsense_filesense.toml")?;
+        .context("Could not read config file at ~/.KORASENSE_filesense.toml")?;
 
     let config: Config = toml::from_str(&config_str)
         .context("Could not parse config file")?;

@@ -1,9 +1,9 @@
 # FileSense Configuration
-# Copy this file to ~/.opsense_filesense.toml and fill in your details
+# Copy this file to ~/.KORASENSE_filesense.toml and fill in your details
 
 tenant_slug = "your-tenant-slug"
 api_key = "your-api-key"
-backend_url = "http://localhost:3000"  # or https://your-opsense.vercel.app
+backend_url = "http://localhost:3000"  # or https://your-KORASENSE.vercel.app
 
 # Folders to watch for documents
 folders = [

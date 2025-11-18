@@ -4,7 +4,7 @@ import "./globals.css";
 import 'highlight.js/styles/tokyo-night-dark.css';
 
 export const metadata: Metadata = {
-  title: "Opsense Risk Copilot",
+  title: "KORASENSE Risk Copilot",
   description: "Multimodal agentic knowledge and risk assessment platform",
 };
 
