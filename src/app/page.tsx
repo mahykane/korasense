@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import HeroButtons from '@/components/landing/HeroButtons';
+import AgentPipeline from '@/components/landing/AgentPipeline';
 
 export default async function HomePage() {
   const { userId } = await auth();
@@ -26,7 +27,7 @@ export default async function HomePage() {
         justifyContent: 'center',
       }}>
         {/* Subtle accent glows */}
-        <div style={{
+        <div className="hidden md:block" style={{
           position: 'absolute',
           top: '-20%',
           right: '-10%',
@@ -36,7 +37,7 @@ export default async function HomePage() {
           filter: 'blur(80px)',
           pointerEvents: 'none'
         }} />
-        <div style={{
+        <div className="hidden md:block" style={{
           position: 'absolute',
           bottom: '-10%',
           left: '-10%',
@@ -47,31 +48,20 @@ export default async function HomePage() {
           pointerEvents: 'none'
         }} />
         
-        <div className="max-w-5xl mx-auto px-6 py-12 text-center" style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ marginBottom: '2rem' }}>
-            <span style={{
-              display: 'inline-block',
-              padding: '0.5rem 1rem',
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-center" style={{ position: 'relative', zIndex: 1 }}>
+          <div className="mb-6 sm:mb-8">
+            <span className="inline-block px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full" style={{
               backgroundColor: 'var(--accent-10)',
               border: '1px solid var(--accent-20)',
-              borderRadius: '9999px',
-              fontSize: '0.875rem',
-              fontWeight: 600,
               color: 'var(--accent)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em'
             }}>
               🚀 Powered by Gemini 2.0 Flash
             </span>
           </div>
 
-          <h1 style={{ 
-            fontSize: '4rem', 
-            fontWeight: 800,
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight" style={{ 
             color: 'var(--text-primary)',
-            marginBottom: '1.5rem',
             letterSpacing: '-0.03em',
-            lineHeight: 1.1
           }}>
             Your Company&apos;s Knowledge,
             <br />
@@ -85,14 +75,8 @@ export default async function HomePage() {
             </span>
           </h1>
           
-          <p style={{ 
-            fontSize: '1.375rem',
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed" style={{ 
             color: 'var(--text-secondary)',
-            marginBottom: '3rem',
-            maxWidth: '48rem',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            lineHeight: 1.6
           }}>
             Multimodal, agentic knowledge management platform that ingests any data type 
             and delivers AI-powered insights through natural conversation.
@@ -101,36 +85,28 @@ export default async function HomePage() {
           <HeroButtons />
 
           {/* Key Stats */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '2rem',
-            marginTop: '4rem',
-            maxWidth: '42rem',
-            marginLeft: 'auto',
-            marginRight: 'auto'
-          }}>
-            <div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--accent)', marginBottom: '0.25rem' }}>
+          <div className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8 mt-8 sm:mt-12 md:mt-16 max-w-2xl mx-auto">
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1" style={{ color: 'var(--accent)' }}>
                 6
               </div>
-              <div style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div className="text-xs sm:text-sm uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
                 AI Agents
               </div>
             </div>
-            <div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--accent)', marginBottom: '0.25rem' }}>
-                &lt;5s
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1" style={{ color: 'var(--accent)' }}>
+                5-10s
               </div>
-              <div style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div className="text-xs sm:text-sm uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
                 Response Time
               </div>
             </div>
-            <div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--accent)', marginBottom: '0.25rem' }}>
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1" style={{ color: 'var(--accent)' }}>
                 100%
               </div>
-              <div style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div className="text-xs sm:text-sm uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
                 Multimodal
               </div>
             </div>
@@ -138,40 +114,35 @@ export default async function HomePage() {
         </div>
       </div>
 
+      {/* Agent Pipeline Section */}
+      <div className="py-12 sm:py-16 md:py-20 lg:py-24" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <AgentPipeline />
+        </div>
+      </div>
+
       {/* Features Section */}
-      <div className="max-w-6xl mx-auto px-6 py-20">
-        <div className="text-center mb-16">
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: 700,
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4" style={{ 
             color: 'var(--text-primary)',
-            marginBottom: '1rem'
           }}>
             Everything You Need for Enterprise Knowledge
           </h2>
-          <p style={{ 
-            fontSize: '1.125rem',
+          <p className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto" style={{ 
             color: 'var(--text-secondary)',
-            maxWidth: '42rem',
-            marginLeft: 'auto',
-            marginRight: 'auto'
           }}>
             A complete platform designed for modern organizations that need to make sense of their data
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
           <div className="card">
-            <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🖼️</div>
-            <h3 style={{ 
-              fontSize: '1.25rem', 
-              fontWeight: 600,
-              marginBottom: '0.75rem',
-              color: 'var(--text-primary)'
-            }}>
+            <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🖼️</div>
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3" style={{ color: 'var(--text-primary)' }}>
               Multimodal Input
             </h3>
-            <p className="text-secondary" style={{ lineHeight: 1.6 }}>
+            <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               Upload and analyze images, videos, PDFs, documents, spreadsheets. 
               Extract insights from any media type with vision AI.
             </p>
@@ -260,51 +231,32 @@ export default async function HomePage() {
       </div>
 
       {/* How It Works Section */}
-      <div style={{ backgroundColor: 'var(--bg-secondary)', padding: '5rem 1.5rem' }}>
+      <div className="py-12 sm:py-16 md:py-20 px-4 sm:px-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 style={{ 
-              fontSize: '2.5rem', 
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              marginBottom: '1rem'
-            }}>
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4" style={{ color: 'var(--text-primary)' }}>
               How It Works
             </h2>
-            <p style={{ 
-              fontSize: '1.125rem',
-              color: 'var(--text-secondary)',
-              maxWidth: '42rem',
-              marginLeft: 'auto',
-              marginRight: 'auto'
-            }}>
+            <p className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
               Sophisticated multi-agent pipeline ensures accurate, reliable answers
             </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <div className="flex flex-col gap-4 sm:gap-6">
             {/* Step 1 */}
-            <div className="card" style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
-              <div style={{
-                minWidth: '3rem',
-                height: '3rem',
-                borderRadius: '50%',
+            <div className="card flex gap-3 sm:gap-4 md:gap-6 items-start">
+              <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-base sm:text-lg font-bold" style={{
                 backgroundColor: 'var(--accent-10)',
                 border: '2px solid var(--accent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                fontWeight: 700,
                 color: 'var(--accent)'
               }}>
                 1
               </div>
-              <div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                   📥 Ingestion & Embedding
                 </h3>
-                <p className="text-secondary" style={{ lineHeight: 1.6 }}>
+                <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                   Upload documents through the UI or automated "Sense" apps. Content is intelligently 
                   chunked and embedded using Gemini or local models, then stored in Qdrant vector database.
                 </p>
@@ -399,25 +351,17 @@ export default async function HomePage() {
       </div>
 
       {/* Tech Stack Section */}
-      <div className="max-w-6xl mx-auto px-6 py-20">
-        <div className="text-center mb-16">
-          <h2 style={{ 
-            fontSize: '2.5rem', 
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            marginBottom: '1rem'
-          }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4" style={{ color: 'var(--text-primary)' }}>
             Built With Modern Technologies
           </h2>
-          <p style={{ 
-            fontSize: '1.125rem',
-            color: 'var(--text-secondary)'
-          }}>
+          <p className="text-base sm:text-lg md:text-xl" style={{ color: 'var(--text-secondary)' }}>
             Enterprise-grade stack for performance, scalability, and reliability
           </p>
         </div>
 
-        <div className="grid md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           <div className="card text-center">
             <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>⚛️</div>
             <h4 style={{ fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
@@ -501,26 +445,18 @@ export default async function HomePage() {
       </div>
 
       {/* Use Cases Section */}
-      <div style={{ backgroundColor: 'var(--bg-secondary)', padding: '5rem 1.5rem' }}>
+      <div className="py-12 sm:py-16 md:py-20 px-4 sm:px-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 style={{ 
-              fontSize: '2.5rem', 
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              marginBottom: '1rem'
-            }}>
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4" style={{ color: 'var(--text-primary)' }}>
               Real-World Use Cases
             </h2>
-            <p style={{ 
-              fontSize: '1.125rem',
-              color: 'var(--text-secondary)'
-            }}>
+            <p className="text-base sm:text-lg md:text-xl" style={{ color: 'var(--text-secondary)' }}>
               Designed for organizations that need intelligent access to their knowledge
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <div className="card">
               <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--text-primary)' }}>
                 📋 Compliance & Risk
@@ -577,26 +513,14 @@ export default async function HomePage() {
       </div>
 
       {/* CTA Section */}
-      <div className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <h2 style={{ 
-          fontSize: '3rem', 
-          fontWeight: 700,
-          color: 'var(--text-primary)',
-          marginBottom: '1.5rem',
-          lineHeight: 1.2
-        }}>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20 text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight" style={{ color: 'var(--text-primary)' }}>
           Ready to Transform Your
-          <br />
+          <br className="hidden sm:block" />
+          <span className="sm:hidden"> </span>
           Company Knowledge?
         </h2>
-        <p style={{ 
-          fontSize: '1.25rem',
-          color: 'var(--text-secondary)',
-          marginBottom: '3rem',
-          maxWidth: '36rem',
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        }}>
+        <p className="text-base sm:text-lg md:text-xl mb-8 sm:mb-12 max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
           Get started in minutes. No credit card required.
         </p>
         
@@ -604,12 +528,8 @@ export default async function HomePage() {
       </div>
 
       {/* Footer */}
-      <div style={{ 
-        borderTop: '1px solid var(--border)',
-        padding: '2rem 1.5rem',
-        textAlign: 'center'
-      }}>
-        <p style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)' }}>
+      <div className="border-t px-4 sm:px-6 py-6 sm:py-8 text-center" style={{ borderColor: 'var(--border)' }}>
+        <p className="text-xs sm:text-sm" style={{ color: 'var(--text-tertiary)' }}>
           © 2025 KORASENSE Knowledge App. Built with ❤️ using Next.js, Gemini AI, and Qdrant.
         </p>
       </div>
