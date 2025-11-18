@@ -38,3 +38,9 @@ next-env.d.ts
 
 # prisma
 prisma/migrations
+/senses/filesense-app/node_modules/
+/senses/filesense/target/debug/
+
+/senses/filesense-app/src-tauri/target
+senses/filesense-app/src-tauri/target/debug/
+senses/filesense/target/release/

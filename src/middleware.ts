@@ -7,6 +7,7 @@ const isPublicRoute = createRouteMatcher([
   '/sign-up(.*)',
   '/demo(.*)',
   '/api/external(.*)',
+  '/api/ingest',
 ]);
 
 // Named export required for Next.js 16+ proxy convention

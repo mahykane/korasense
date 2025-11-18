@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Opsense Knowledge Sync",
+  "version": "1.0.0",
+  "identifier": "com.opsense.filesense",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "bundle": {
+    "active": false,
+    "targets": "all"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Opsense FileSense",
+        "width": 900,
+        "height": 700,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null,
+      "capabilities": [
+        {
+          "identifier": "main-capability",
+          "description": "Capability for the main window",
+          "windows": ["main"],
+          "permissions": [
+            "core:default",
+            "dialog:allow-open",
+            "dialog:allow-message",
+            "dialog:default",
+            "store:allow-get",
+            "store:allow-set",
+            "store:allow-save",
+            "store:allow-clear",
+            "store:default",
+            "shell:allow-open",
+            "os:allow-platform"
+          ]
+        }
+      ]
+    }
+  },
+  "plugins": {}
+}

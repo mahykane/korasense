@@ -24,9 +24,14 @@ export default async function ProtectedLayout({
   await getOrCreateDefaultTenant(user.id);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <Navigation user={user} />
-      <main className="container mx-auto px-4 py-8">
+      <main style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '2rem 1.5rem',
+        width: '100%'
+      }}>
         {children}
       </main>
     </div>

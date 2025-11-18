@@ -1,0 +1,17 @@
+node_modules
+.next
+.env
+.env.local
+.DS_Store
+*.log
+senses/
+scripts/
+*.md
+!README.md
+prisma/migrations/
+.vscode/
+.idea/
+prisma/migrations
+/senses/filesense-app/node_modules
+/senses/filesense/target/debug
+/senses

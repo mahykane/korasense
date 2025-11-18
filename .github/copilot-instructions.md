@@ -1,7 +1,7 @@
-# Opsense Risk Copilot - Copilot Instructions
+# Opsense Knowledge App - Copilot Instructions
 
 ## Project Overview
-Opsense Risk Copilot is a multimodal, agentic knowledge and risk copilot built with Next.js 14+, TypeScript, Prisma, Qdrant, and Gemini AI.
+Opsense Knowledge App is a multimodal, agentic knowledge management platform that allows employees to ingest any type of data and ask complex questions to unified company knowledge. Built with Next.js 14+, TypeScript, Prisma, Qdrant, and Gemini AI.
 
 ## Tech Stack
 - Framework: Next.js 14+ (App Router, TypeScript, React 18)

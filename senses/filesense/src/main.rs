@@ -135,24 +135,26 @@ async fn scan_once(config: &Config) -> Result<()> {
     Ok(())
 }
 
-async fn scan_folder(path: &PathBuf, config: &Config) -> Result<()> {
-    let entries = fs::read_dir(path)?;
+fn scan_folder<'a>(path: &'a PathBuf, config: &'a Config) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<()>> + Send + 'a>> {
+    Box::pin(async move {
+        let entries = fs::read_dir(path)?;
 
-    for entry in entries {
-        let entry = entry?;
-        let path = entry.path();
+        for entry in entries {
+            let entry = entry?;
+            let path = entry.path();
 
-        if path.is_dir() {
-            scan_folder(&path, config).await?;
-        } else if should_process(&path) {
-            println!("Processing: {:?}", path);
-            if let Err(e) = ingest_file(&path, config).await {
-                eprintln!("Error: {}", e);
+            if path.is_dir() {
+                scan_folder(&path, config).await?;
+            } else if should_process(&path) {
+                println!("Processing: {:?}", path);
+                if let Err(e) = ingest_file(&path, config).await {
+                    eprintln!("Error: {}", e);
+                }
             }
         }
-    }
 
-    Ok(())
+        Ok(())
+    })
 }
 
 fn should_process(path: &PathBuf) -> bool {

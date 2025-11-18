@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import 'highlight.js/styles/tokyo-night-dark.css';
 
 export const metadata: Metadata = {
   title: "Opsense Risk Copilot",

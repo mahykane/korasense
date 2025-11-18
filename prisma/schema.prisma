@@ -17,11 +17,11 @@ enum Role {
 }
 
 enum DocumentType {
-  POLICY
-  INCIDENT
-  ARCHITECTURE
-  CHAT
-  TABLE
+  DOCUMENT
+  SPREADSHEET
+  PRESENTATION
+  IMAGE
+  TEXT
   OTHER
 }
 
@@ -51,12 +51,6 @@ enum FeedbackLabel {
   UNHELPFUL
 }
 
-enum RiskLevel {
-  LOW
-  MEDIUM
-  HIGH
-}
-
 model Tenant {
   id        String   @id @default(uuid())
   name      String
@@ -70,8 +64,6 @@ model Tenant {
   qaSessions        QaSession[]
   qaMetrics         QaMetrics[]
   qaFeedback        QaFeedback[]
-  riskAssessments   RiskAssessment[]
-  playbooks         Playbook[]
   externalApiKeys   ExternalApiKey[]
 }
 
@@ -86,7 +78,6 @@ model User {
   tenantMembers    TenantMember[]
   qaSessions       QaSession[]
   qaFeedback       QaFeedback[]
-  riskAssessments  RiskAssessment[]
 }
 
 model TenantMember {
@@ -200,34 +191,4 @@ model QaFeedback {
   @@index([tenantId, createdAt])
 }
 
-model RiskAssessment {
-  id                 String    @id @default(uuid())
-  tenantId           String
-  userId             String?
-  domain             String
-  objective          String    @db.Text
-  timeHorizonMonths  Int
-  riskRegister       Json
-  overallLevel       RiskLevel
-  createdAt          DateTime  @default(now())
 
-  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  user   User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-  @@index([tenantId, createdAt])
-}
-
-model Playbook {
-  id           String   @id @default(uuid())
-  tenantId     String?
-  riskPattern  String
-  title        String
-  description  String   @db.Text
-  steps        Json
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-
-  @@index([riskPattern])
-}

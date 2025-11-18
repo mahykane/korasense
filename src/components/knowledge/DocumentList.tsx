@@ -18,86 +18,154 @@ interface DocumentListProps {
 }
 
 export default function DocumentList({ documents }: DocumentListProps) {
-  const getStatusBadge = (status: string) => {
+  const getStatusStyle = (status: string) => {
     const styles = {
-      EMBEDDED: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-      PARSED: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-      UPLOADED: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300',
+      EMBEDDED: { backgroundColor: 'var(--accent-10)', color: 'var(--accent)' },
+      PARSED: { backgroundColor: 'var(--secondary-10)', color: 'var(--secondary)' },
+      UPLOADED: { backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-tertiary)' },
     };
     return styles[status as keyof typeof styles] || styles.UPLOADED;
   };
 
-  const getDocTypeColor = (type: string) => {
-    const colors = {
-      POLICY: 'text-blue-600',
-      INCIDENT: 'text-red-600',
-      ARCHITECTURE: 'text-purple-600',
-      CHAT: 'text-green-600',
-      TABLE: 'text-yellow-600',
-      OTHER: 'text-gray-600',
-    };
-    return colors[type as keyof typeof colors] || colors.OTHER;
+  const getDocTypeStyle = (type: string) => {
+    // All types use accent color to maintain 70-20-10 rule
+    return { color: 'var(--accent)' };
   };
 
   return (
     <div className="card">
-      <h2 className="text-xl font-semibold mb-4">Documents</h2>
+      <h2 style={{ 
+        fontSize: '1.25rem', 
+        fontWeight: 600, 
+        marginBottom: 'var(--spacing-md)',
+        color: 'var(--text-primary)'
+      }}>
+        Documents
+      </h2>
       
       {documents.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
-          <div className="text-4xl mb-4">📄</div>
-          <p>No documents yet</p>
-          <p className="text-sm mt-2">Configure a Sense client to start ingesting documents</p>
+        <div style={{ textAlign: 'center', padding: 'var(--spacing-2xl) 0' }}>
+          <div style={{ fontSize: '3rem', marginBottom: 'var(--spacing-md)' }}>📄</div>
+          <p className="text-secondary">No documents yet</p>
+          <p className="text-tertiary" style={{ fontSize: '0.875rem', marginTop: 'var(--spacing-xs)' }}>
+            Configure a Sense client to start ingesting documents
+          </p>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-800">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ backgroundColor: 'var(--bg-tertiary)', borderBottom: '1px solid var(--border)' }}>
+                <th className="text-tertiary" style={{ 
+                  padding: 'var(--spacing-sm) var(--spacing-md)', 
+                  textAlign: 'left', 
+                  fontSize: '0.75rem', 
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
                   Title
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-tertiary" style={{ 
+                  padding: 'var(--spacing-sm) var(--spacing-md)', 
+                  textAlign: 'left', 
+                  fontSize: '0.75rem', 
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
                   Type
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-tertiary" style={{ 
+                  padding: 'var(--spacing-sm) var(--spacing-md)', 
+                  textAlign: 'left', 
+                  fontSize: '0.75rem', 
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
                   Status
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-tertiary" style={{ 
+                  padding: 'var(--spacing-sm) var(--spacing-md)', 
+                  textAlign: 'left', 
+                  fontSize: '0.75rem', 
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
                   Chunks
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-tertiary" style={{ 
+                  padding: 'var(--spacing-sm) var(--spacing-md)', 
+                  textAlign: 'left', 
+                  fontSize: '0.75rem', 
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
                   Source
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="text-tertiary" style={{ 
+                  padding: 'var(--spacing-sm) var(--spacing-md)', 
+                  textAlign: 'left', 
+                  fontSize: '0.75rem', 
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
                   Created
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody>
               {documents.map((doc) => (
-                <tr key={doc.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                  <td className="px-4 py-4">
-                    <div className="font-medium">{doc.title}</div>
-                    <div className="text-sm text-gray-500">{doc.originalFileName}</div>
+                <tr 
+                  key={doc.id}
+                  style={{ 
+                    borderBottom: '1px solid var(--border-subtle)',
+                    transition: 'background-color 0.15s ease'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  <td style={{ padding: 'var(--spacing-md)' }}>
+                    <div style={{ fontWeight: 500, color: 'var(--text-primary)', fontSize: '0.9375rem' }}>
+                      {doc.title}
+                    </div>
+                    <div className="text-tertiary" style={{ fontSize: '0.8125rem', marginTop: '0.125rem' }}>
+                      {doc.originalFileName}
+                    </div>
                   </td>
-                  <td className="px-4 py-4">
-                    <span className={`text-sm font-medium ${getDocTypeColor(doc.docType)}`}>
+                  <td style={{ padding: 'var(--spacing-md)' }}>
+                    <span style={{ 
+                      fontSize: '0.875rem', 
+                      fontWeight: 500,
+                      ...getDocTypeStyle(doc.docType)
+                    }}>
                       {doc.docType}
                     </span>
                   </td>
-                  <td className="px-4 py-4">
-                    <span className={`px-2 py-1 text-xs font-semibold rounded ${getStatusBadge(doc.status)}`}>
+                  <td style={{ padding: 'var(--spacing-md)' }}>
+                    <span style={{ 
+                      padding: '0.25rem 0.625rem',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      borderRadius: '0.375rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.025em',
+                      ...getStatusStyle(doc.status)
+                    }}>
                       {doc.status}
                     </span>
                   </td>
-                  <td className="px-4 py-4 text-sm">
+                  <td className="text-secondary" style={{ padding: 'var(--spacing-md)', fontSize: '0.875rem' }}>
                     {doc._count.chunks}
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-500">
+                  <td className="text-tertiary" style={{ padding: 'var(--spacing-md)', fontSize: '0.875rem' }}>
                     {doc.source}
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-500">
+                  <td className="text-tertiary" style={{ padding: 'var(--spacing-md)', fontSize: '0.875rem' }}>
                     {new Date(doc.createdAt).toLocaleDateString()}
                   </td>
                 </tr>

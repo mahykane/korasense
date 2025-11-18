@@ -1,16 +1,17 @@
-# Opsense Risk Copilot
+# Opsense Knowledge App
 
-A multimodal, agentic knowledge and risk copilot built with Next.js 14+, TypeScript, Prisma, Qdrant, and Gemini AI.
+An intelligent, multimodal knowledge management platform that allows employees to ingest any type of data and ask complex questions to unified company knowledge. Built with Next.js 14+, TypeScript, Prisma, Qdrant, and Gemini AI.
 
 ## 🚀 Features
 
-- **Knowledge Search**: Ask complex questions and get AI-powered answers grounded in your documents with full traceability
-- **Risk Assessment**: Generate structured risk registers with evidence-based likelihood and impact analysis
-- **Agentic Pipeline**: Multi-step reasoning with gatekeeper, planner, retriever, analyst, auditor, and writer agents
+- **Unified Knowledge Base**: Ingest documents, PDFs, Word files, text, and more into a centralized knowledge repository
+- **Web & Desktop Upload**: Upload documents directly from browser or use the desktop app for automated folder watching
+- **Intelligent Q&A**: Ask complex questions and get AI-powered answers with source citations and confidence scores
+- **Multi-Agent Reasoning**: Decompose complex queries with gatekeeper, planner, retriever, analyst, and synthesizer agents
+- **Local Embeddings**: Fast, cost-effective semantic search using local transformer models (384-dim all-MiniLM-L6-v2)
 - **Quality Metrics**: Track answer quality, latency, and user feedback with comprehensive evaluation dashboards
-- **Document Ingestion**: Automatic document processing via Rust "Senses" that watch folders
-- **External API**: REST API for external integrations
-- **Demo Mode**: Public read-only demo with pre-loaded data
+- **External API**: REST API for external integrations and programmatic access
+- **Demo Mode**: Public read-only demo with pre-loaded company knowledge
 
 ## 📋 Tech Stack
 

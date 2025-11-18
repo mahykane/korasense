@@ -65,12 +65,12 @@ class QdrantClient {
     try {
       // Check if collection exists
       await this.request(`/collections/${this.collectionName}`);
+      console.log(`Collection ${this.collectionName} already exists`);
     } catch (error) {
       // Create collection if it doesn't exist
-      await this.request('/collections', {
+      await this.request(`/collections/${this.collectionName}`, {
         method: 'PUT',
         body: JSON.stringify({
-          name: this.collectionName,
           vectors: {
             size: vectorSize,
             distance: 'Cosine',
@@ -78,6 +78,35 @@ class QdrantClient {
         }),
       });
       console.log(`Created Qdrant collection: ${this.collectionName}`);
+      
+      // Create payload indexes for filtering
+      await this.createPayloadIndexes();
+    }
+  }
+
+  /**
+   * Create payload indexes for efficient filtering
+   */
+  async createPayloadIndexes() {
+    const indexes = [
+      { field: 'tenantId', type: 'keyword' },
+      { field: 'documentId', type: 'keyword' },
+      { field: 'docType', type: 'keyword' },
+    ];
+
+    for (const index of indexes) {
+      try {
+        await this.request(`/collections/${this.collectionName}/index`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            field_name: index.field,
+            field_schema: index.type,
+          }),
+        });
+        console.log(`Created index for ${index.field}`);
+      } catch (error) {
+        console.warn(`Failed to create index for ${index.field}:`, error);
+      }
     }
   }
 

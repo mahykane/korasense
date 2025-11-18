@@ -47,16 +47,41 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Agent run error:', error);
     
-    // Handle specific error types
-    if (error.message.includes('rejected') || error.message.includes('Clarification needed')) {
+    // Handle gatekeeper rejection
+    if (error.message.includes('Query rejected:')) {
+      const reason = error.message.replace('Query rejected: ', '');
       return NextResponse.json(
-        { error: error.message },
+        { 
+          error: 'Query Not Suitable',
+          message: reason,
+          guidance: 'Please ask questions related to risk assessment, compliance, security policies, or operational procedures. Examples: "What are our data retention policies?", "Summarize recent security incidents", "What are the compliance requirements for GDPR?"',
+          type: 'REJECTED'
+        },
+        { status: 400 }
+      );
+    }
+    
+    // Handle clarification needed
+    if (error.message.includes('Clarification needed:')) {
+      const clarificationQuestion = error.message.replace('Clarification needed: ', '');
+      return NextResponse.json(
+        { 
+          error: 'More Information Needed',
+          message: clarificationQuestion,
+          guidance: 'Please provide more specific details to help us answer your question accurately.',
+          type: 'CLARIFICATION'
+        },
         { status: 400 }
       );
     }
 
     return NextResponse.json(
-      { error: 'Internal server error', details: error.message },
+      { 
+        error: 'Internal Server Error', 
+        message: error.message,
+        guidance: 'An unexpected error occurred. Please try again or contact support if the issue persists.',
+        type: 'SERVER_ERROR'
+      },
       { status: 500 }
     );
   }
