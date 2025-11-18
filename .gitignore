@@ -44,3 +44,5 @@ prisma/migrations
 /senses/filesense-app/src-tauri/target
 senses/filesense-app/src-tauri/target/debug/
 senses/filesense/target/release/
+
+/docs

@@ -188,6 +188,11 @@ class QdrantClient {
           must,
         },
         with_payload: true,
+        // OPTIMIZATION: Use approximate HNSW search for speed
+        params: {
+          hnsw_ef: 128, // Lower = faster (default: 128)
+          exact: false, // Use approximate search
+        },
       }),
     });
 
