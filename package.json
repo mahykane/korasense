@@ -24,6 +24,9 @@
   "license": "ISC",
   "dependencies": {
     "@clerk/nextjs": "^6.35.2",
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.0",
     "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.19.0",
     "@tailwindcss/postcss": "^4.1.17",

@@ -612,3 +612,170 @@ export async function runGeminiAgent(
   // Max iterations reached
   throw new Error(`Agent exceeded maximum iterations (${maxIterations}). This may indicate an issue with the function calling loop.`);
 }
+
+/**
+ * Enhanced agent with web search capabilities
+ */
+export async function runGeminiAgentWithWeb(
+  question: string,
+  tenantId: string,
+  userId?: string,
+  useWebSearch = false,
+  mode: 'standard' | 'deep' | 'web' = 'standard'
+): Promise<{
+  answer: string;
+  trace: any[];
+  qualityScore: number;
+  totalLatencyMs: number;
+}> {
+  const startTime = Date.now();
+  const trace: any[] = [];
+  
+  console.log(`\n🚀 Enhanced Agent Pipeline - Mode: ${mode}, Web Search: ${useWebSearch}`);
+  
+  try {
+    // Step 1: If web search enabled, get web context first
+    let webContext = '';
+    if (useWebSearch) {
+      const webStartTime = Date.now();
+      const { searchWeb } = await import('./web_search');
+      const webResults = await searchWeb(question);
+      const webLatency = Date.now() - webStartTime;
+      
+      webContext = webResults.results.map(r => `**${r.title}**\n${r.snippet}`).join('\n\n');
+      
+      trace.push({
+        step: 'WEB_SEARCH',
+        summary: `Found ${webResults.totalResults} web results`,
+        durationMs: webLatency,
+        documentsUsed: [],
+        status: 'success',
+        details: `Searched: "${webResults.query}"`,
+      });
+    }
+    
+    // Step 2: Get local knowledge
+    const retrievalStartTime = Date.now();
+    const embedding = await import('./gemini').then(m => m.generateEmbedding(question));
+    const searchResults = await import('./qdrant').then(m => 
+      m.qdrant.search(embedding, tenantId, { limit: mode === 'deep' ? 8 : 5 })
+    );
+    
+    let localContext = '';
+    const documentsUsed = new Set<string>();
+    
+    if (searchResults.length > 0) {
+      const chunkIds = searchResults.map(r => r.id);
+      const chunks = await prisma.documentChunk.findMany({
+        where: { qdrantPointId: { in: chunkIds } },
+        select: {
+          text: true,
+          document: {
+            select: {
+              id: true,
+              title: true,
+              docType: true,
+            },
+          },
+        },
+      });
+      
+      localContext = chunks.map((chunk: any, i: number) => {
+        documentsUsed.add(chunk.document.id);
+        return `**${chunk.document.title}** (${chunk.document.docType})\n${chunk.text.substring(0, 400)}...`;
+      }).join('\n\n');
+      
+      trace.push({
+        step: 'RETRIEVER',
+        summary: `Retrieved ${chunks.length} relevant chunks from ${documentsUsed.size} documents`,
+        durationMs: Date.now() - retrievalStartTime,
+        documentsUsed: Array.from(documentsUsed).map(id => {
+          const chunk = chunks.find((c: any) => c.document.id === id);
+          return { id, title: chunk?.document?.title || 'Unknown' };
+        }),
+        status: 'success',
+        details: `Found ${chunks.length} chunks`,
+      });
+    }
+    
+    // Step 3: Generate comprehensive answer
+    const reasoningStartTime = Date.now();
+    const model = genAI.getGenerativeModel({ 
+      model: mode === 'deep' ? 'gemini-1.5-pro' : 'gemini-1.5-flash',
+      generationConfig: {
+        temperature: mode === 'deep' ? 0.7 : 0.5,
+        maxOutputTokens: mode === 'deep' ? 2048 : 1024,
+      }
+    });
+
+    const localSection = localContext 
+      ? `\n\n**📚 INTERNAL KNOWLEDGE:**\n${localContext}\n\n`
+      : '\n\n📚 No relevant internal documents found.\n\n';
+
+    const webSection = webContext 
+      ? `\n\n**🌐 WEB INFORMATION:**\n${webContext}\n\n`
+      : '';
+
+    const modeInstructions = mode === 'deep'
+      ? `You are in DEEP REASONING mode. Provide comprehensive analysis with:
+- Multiple perspectives and viewpoints
+- Step-by-step logical reasoning
+- Identification of assumptions and limitations
+- Actionable insights and recommendations
+- Clear distinction between facts and inferences`
+      : `Provide a clear, concise answer based on the available evidence.`;
+
+    const prompt = `${modeInstructions}
+
+**QUESTION:**
+${question}
+${localSection}${webSection}
+**INSTRUCTIONS:**
+1. Synthesize information from all available sources
+2. Cite sources clearly (🌐 for web, 📚 for internal docs)
+3. Be transparent about confidence level and any gaps
+4. Use markdown formatting for readability
+5. If information is insufficient, clearly state what's missing
+
+Provide your response:`;
+
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const answer = response.text();
+    const reasoningLatency = Date.now() - reasoningStartTime;
+    
+    trace.push({
+      step: mode === 'deep' ? 'DEEP_REASONER' : 'ANALYST',
+      summary: `Generated ${mode} mode response`,
+      durationMs: reasoningLatency,
+      documentsUsed: [],
+      status: 'success',
+      details: `Model: ${mode === 'deep' ? 'gemini-1.5-pro' : 'gemini-1.5-flash'}`,
+    });
+    
+    // Calculate quality score
+    const hasLocalEvidence = localContext.length > 0;
+    const hasWebEvidence = webContext.length > 0;
+    const answerLength = answer.length;
+    
+    let qualityScore = 0.5;
+    if (hasLocalEvidence) qualityScore += 0.2;
+    if (hasWebEvidence) qualityScore += 0.15;
+    if (answerLength > 200) qualityScore += 0.1;
+    if (mode === 'deep') qualityScore += 0.05;
+    
+    const totalLatency = Date.now() - startTime;
+    
+    console.log(`✓ Enhanced pipeline completed: ${totalLatency}ms (Quality: ${(qualityScore * 100).toFixed(0)}%)`);
+    
+    return {
+      answer,
+      trace,
+      qualityScore: Math.min(qualityScore, 1.0),
+      totalLatencyMs: totalLatency,
+    };
+  } catch (error: any) {
+    console.error('Enhanced agent error:', error);
+    throw error;
+  }
+}

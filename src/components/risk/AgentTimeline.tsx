@@ -1,6 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faShield, 
+  faListCheck, 
+  faMagnifyingGlass, 
+  faBrain, 
+  faCircleCheck, 
+  faPenNib, 
+  faArrowsRotate,
+  faFlask,
+  faFile,
+  faChevronRight,
+  faChevronDown
+} from '@fortawesome/free-solid-svg-icons';
 
 interface AgentTraceStep {
   step: string;
@@ -32,16 +46,29 @@ export default function AgentTimeline({ trace }: AgentTimelineProps) {
   };
 
   const getStepIcon = (step: string) => {
-    const icons: Record<string, string> = {
-      GATEKEEPER: '🛡️',
-      PLANNER: '📋',
-      RETRIEVER: '🔍',
-      ANALYST: '🤖',
-      AUDITOR: '✅',
-      WRITER: '✍️',
-      RE_ANALYSIS: '🔄',
+    const icons: Record<string, any> = {
+      GATEKEEPER: faShield,
+      PLANNER: faListCheck,
+      RETRIEVER: faMagnifyingGlass,
+      ANALYST: faBrain,
+      AUDITOR: faCircleCheck,
+      WRITER: faPenNib,
+      RE_ANALYSIS: faArrowsRotate,
     };
-    return icons[step] || '📌';
+    return icons[step] || faFlask;
+  };
+
+  const getStepColor = (step: string) => {
+    const colors: Record<string, string> = {
+      GATEKEEPER: '#3B82F6',
+      PLANNER: '#8B5CF6',
+      RETRIEVER: '#EF4444',
+      ANALYST: '#10B981',
+      AUDITOR: '#F59E0B',
+      WRITER: '#EC4899',
+      RE_ANALYSIS: '#6366F1',
+    };
+    return colors[step] || 'var(--accent)';
   };
 
   const getStepDescription = (step: string) => {
@@ -63,111 +90,182 @@ export default function AgentTimeline({ trace }: AgentTimelineProps) {
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'space-between', 
-        marginBottom: 'var(--spacing-xl)' 
+        marginBottom: 'var(--spacing-lg)',
+        paddingBottom: 'var(--spacing-md)',
+        borderBottom: '1px solid var(--border)'
       }}>
         <h2 style={{ 
-          fontSize: '1.25rem', 
+          fontSize: '1.125rem', 
           fontWeight: 600,
           color: 'var(--text-primary)',
           display: 'flex',
           alignItems: 'center',
-          gap: 'var(--spacing-xs)'
+          gap: 'var(--spacing-sm)'
         }}>
-          🔬 Agent Pipeline Trace
+          <FontAwesomeIcon icon={faFlask} style={{ color: 'var(--accent)', fontSize: '1rem' }} />
+          Agent Pipeline
         </h2>
-        <div className="text-tertiary" style={{ fontSize: '0.875rem' }}>
-          {trace.length} steps completed
+        <div style={{ 
+          fontSize: '0.8125rem',
+          color: 'var(--text-tertiary)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'var(--spacing-xs)',
+          padding: '0.375rem 0.75rem',
+          backgroundColor: 'var(--bg-tertiary)',
+          borderRadius: 'var(--radius-full)'
+        }}>
+          <div style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            backgroundColor: 'var(--accent)'
+          }} />
+          {trace.length} steps
         </div>
       </div>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)', position: 'relative' }}>
         {trace.map((step, index) => (
           <div 
             key={index} 
             style={{ 
-              borderLeft: '3px solid var(--accent)',
-              paddingLeft: 'var(--spacing-md)',
-              paddingTop: 'var(--spacing-xs)',
-              paddingBottom: 'var(--spacing-xs)'
+              position: 'relative',
+              paddingLeft: '3rem'
             }}
           >
+            {/* Timeline connector line */}
+            {index < trace.length - 1 && (
+              <div style={{
+                position: 'absolute',
+                left: '1.1875rem',
+                top: '3rem',
+                bottom: '-0.5rem',
+                width: '2px',
+                backgroundColor: 'var(--border)',
+                opacity: 0.4
+              }} />
+            )}
+            
+            {/* Step icon circle */}
+            <div style={{
+              position: 'absolute',
+              left: '0',
+              top: '1rem',
+              width: '2.5rem',
+              height: '2.5rem',
+              borderRadius: '50%',
+              backgroundColor: 'var(--bg-elevated)',
+              border: '2px solid var(--border)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s ease',
+              zIndex: 1
+            }}>
+              <FontAwesomeIcon 
+                icon={getStepIcon(step.step)} 
+                style={{ 
+                  fontSize: '1rem',
+                  color: getStepColor(step.step)
+                }} 
+              />
+            </div>
             <button
               onClick={() => toggleStep(index)}
               style={{
                 width: '100%',
                 textAlign: 'left',
-                padding: 'var(--spacing-sm)',
+                padding: 'var(--spacing-md)',
                 borderRadius: 'var(--radius-md)',
-                transition: 'background-color 0.2s ease',
-                border: 'none',
-                backgroundColor: 'transparent',
+                transition: 'all 0.15s ease',
+                border: '1px solid var(--border)',
+                backgroundColor: 'var(--bg-elevated)',
                 cursor: 'pointer'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                e.currentTarget.style.borderColor = 'var(--accent-20)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
+                e.currentTarget.style.borderColor = 'var(--border)';
+              }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)', flex: 1 }}>
-                  <span style={{ fontSize: '2rem' }}>{getStepIcon(step.step)}</span>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-xs)' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-md)', flex: 1 }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', flexWrap: 'wrap' }}>
                       <div style={{ 
                         fontWeight: 600, 
-                        fontSize: '1.125rem',
+                        fontSize: '0.9375rem',
                         color: 'var(--text-primary)',
-                        letterSpacing: '0.01em'
+                        letterSpacing: '0.02em',
+                        textTransform: 'uppercase'
                       }}>
                         {step.step}
                       </div>
                       {step.status && (
                         <span style={{
-                          fontSize: '0.75rem',
+                          fontSize: '0.6875rem',
                           padding: '0.25rem 0.625rem',
-                          borderRadius: '9999px',
+                          borderRadius: 'var(--radius-full)',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.025em',
+                          letterSpacing: '0.05em',
                           fontWeight: 600,
                           backgroundColor: 
                             step.status === 'success' || step.status === 'approved' 
                               ? 'var(--accent-10)' 
                               : step.status === 'processing'
                               ? 'rgba(255, 193, 7, 0.1)'
-                              : step.status === 'pending' || step.status === 'ready'
-                              ? 'var(--secondary-10)'
-                              : 'var(--secondary-10)',
+                              : 'rgba(107, 114, 128, 0.1)',
                           color: 
                             step.status === 'success' || step.status === 'approved' 
                               ? 'var(--accent)' 
                               : step.status === 'processing'
-                              ? '#FFC107'
-                              : step.status === 'pending' || step.status === 'ready'
-                              ? 'var(--text-tertiary)'
-                              : 'var(--secondary)'
+                              ? '#F59E0B'
+                              : 'var(--text-tertiary)'
                         }}>
-                          {step.status === 'processing' ? '⏳ ' : ''}{step.status}
+                          {step.status}
                         </span>
                       )}
                     </div>
-                    <div className="text-tertiary" style={{ fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                      {getStepDescription(step.step)}
-                    </div>
-                    <div className="text-secondary" style={{ fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                    <div style={{ 
+                      fontSize: '0.8125rem', 
+                      marginTop: '0.375rem',
+                      color: 'var(--text-secondary)',
+                      lineHeight: '1.5'
+                    }}>
                       {step.summary}
+                    </div>
+                    <div style={{ 
+                      fontSize: '0.75rem', 
+                      marginTop: '0.25rem',
+                      color: 'var(--text-tertiary)',
+                      fontStyle: 'italic'
+                    }}>
+                      {getStepDescription(step.step)}
                     </div>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)' }}>
-                  <div style={{ textAlign: 'right' }}>
-                    <div className="text-tertiary" style={{ 
-                      fontSize: '0.75rem',
+                  <div style={{ 
+                    textAlign: 'right',
+                    padding: '0.375rem 0.75rem',
+                    backgroundColor: 'var(--bg-tertiary)',
+                    borderRadius: 'var(--radius-md)'
+                  }}>
+                    <div style={{ 
+                      fontSize: '0.6875rem',
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      marginBottom: '0.125rem'
+                      marginBottom: '0.125rem',
+                      color: 'var(--text-tertiary)'
                     }}>
                       Duration
                     </div>
                     <div style={{ 
-                      fontSize: '0.875rem', 
+                      fontSize: '0.8125rem', 
                       fontFamily: 'monospace',
                       fontWeight: 600,
                       color: 'var(--text-primary)'
@@ -175,41 +273,48 @@ export default function AgentTimeline({ trace }: AgentTimelineProps) {
                       {step.durationMs}ms
                     </div>
                   </div>
-                  <span className="text-tertiary" style={{ fontSize: '1.25rem' }}>
-                    {expandedSteps.has(index) ? '▼' : '▶'}
-                  </span>
+                  <FontAwesomeIcon 
+                    icon={expandedSteps.has(index) ? faChevronDown : faChevronRight}
+                    style={{ 
+                      fontSize: '0.75rem',
+                      color: 'var(--text-tertiary)',
+                      transition: 'transform 0.15s ease'
+                    }}
+                  />
                 </div>
               </div>
             </button>
 
             {expandedSteps.has(index) && (
               <div style={{ 
-                marginTop: 'var(--spacing-sm)', 
-                marginLeft: '3.5rem',
+                marginTop: 'var(--spacing-md)', 
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 'var(--spacing-sm)'
+                gap: 'var(--spacing-sm)',
+                animation: 'fadeIn 0.2s ease'
               }}>
                 {step.details && (
                   <div style={{
-                    padding: 'var(--spacing-sm)',
-                    backgroundColor: 'var(--accent-5)',
+                    padding: 'var(--spacing-md)',
+                    backgroundColor: 'var(--bg-elevated)',
                     borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--accent-20)'
+                    border: '1px solid var(--border)'
                   }}>
-                    <div className="accent-text" style={{
-                      fontSize: '0.75rem',
+                    <div style={{
+                      fontSize: '0.6875rem',
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      marginBottom: 'var(--spacing-xs)'
+                      marginBottom: 'var(--spacing-sm)',
+                      color: 'var(--accent)'
                     }}>
-                      DETAILS
+                      Details
                     </div>
-                    <div className="text-secondary" style={{
-                      fontSize: '0.875rem',
+                    <div style={{
+                      fontSize: '0.8125rem',
                       whiteSpace: 'pre-line',
-                      lineHeight: '1.6'
+                      lineHeight: '1.6',
+                      color: 'var(--text-secondary)'
                     }}>
                       {step.details}
                     </div>
@@ -218,32 +323,49 @@ export default function AgentTimeline({ trace }: AgentTimelineProps) {
                 
                 {step.documentsUsed.length > 0 && (
                   <div style={{
-                    padding: 'var(--spacing-sm)',
-                    backgroundColor: 'var(--bg-tertiary)',
-                    borderRadius: 'var(--radius-md)'
+                    padding: 'var(--spacing-md)',
+                    backgroundColor: 'var(--bg-elevated)',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border)'
                   }}>
-                    <div className="text-tertiary" style={{
-                      fontSize: '0.75rem',
+                    <div style={{
+                      fontSize: '0.6875rem',
                       fontWeight: 600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      marginBottom: 'var(--spacing-xs)'
+                      marginBottom: 'var(--spacing-sm)',
+                      color: 'var(--text-tertiary)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 'var(--spacing-xs)'
                     }}>
-                      DOCUMENTS USED ({step.documentsUsed.length})
+                      <span>Documents Used</span>
+                      <span style={{
+                        padding: '0.125rem 0.5rem',
+                        backgroundColor: 'var(--accent-10)',
+                        color: 'var(--accent)',
+                        borderRadius: 'var(--radius-full)',
+                        fontWeight: 700
+                      }}>
+                        {step.documentsUsed.length}
+                      </span>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       {step.documentsUsed.map((doc) => (
                         <div 
-                          key={doc.id} 
-                          className="text-secondary"
+                          key={doc.id}
                           style={{ 
-                            fontSize: '0.875rem',
+                            fontSize: '0.8125rem',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: 'var(--spacing-xs)'
+                            gap: 'var(--spacing-sm)',
+                            padding: '0.5rem',
+                            backgroundColor: 'var(--bg-secondary)',
+                            borderRadius: 'var(--radius-sm)',
+                            color: 'var(--text-secondary)'
                           }}
                         >
-                          <span>📄</span>
+                          <FontAwesomeIcon icon={faFile} style={{ color: 'var(--accent)', fontSize: '0.75rem' }} />
                           <span>{doc.title}</span>
                         </div>
                       ))}

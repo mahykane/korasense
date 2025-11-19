@@ -10,8 +10,30 @@
     "frontendDist": "../dist"
   },
   "bundle": {
-    "active": false,
-    "targets": "all"
+    "active": true,
+    "targets": ["dmg", "app", "msi"],
+    "publisher": "KORASENSE",
+    "homepage": "https://korasense.com",
+    "shortDescription": "KORASENSE FileSense - Sync your files to the knowledge base",
+    "longDescription": "KORASENSE FileSense is a desktop application that watches your local folders and automatically syncs files to your KORASENSE knowledge base.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": [],
+    "copyright": "Copyright © 2024 KORASENSE",
+    "category": "Productivity",
+    "macOS": {
+      "minimumSystemVersion": "10.13"
+    },
+    "windows": {
+      "wix": {
+        "language": ["en-US"]
+      }
+    }
   },
   "app": {
     "windows": [

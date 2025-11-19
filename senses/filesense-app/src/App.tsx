@@ -3,6 +3,25 @@ import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { open } from '@tauri-apps/plugin-dialog';
 import { Store } from '@tauri-apps/plugin-store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faDiamond, 
+  faServer, 
+  faKey, 
+  faLink, 
+  faPlay, 
+  faStop, 
+  faSync, 
+  faFolderOpen, 
+  faPlus, 
+  faTimes,
+  faSpinner,
+  faCheckCircle,
+  faTimesCircle,
+  faFolder,
+  faSignOutAlt,
+  faChartBar
+} from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 
 interface Config {
@@ -242,7 +261,7 @@ function App() {
     return (
       <div className="app-container">
         <div className="loading-container">
-          <div className="spinner"></div>
+          <FontAwesomeIcon icon={faSpinner} className="spinner" />
           <p className="loading-text">Loading...</p>
         </div>
       </div>
@@ -253,7 +272,10 @@ function App() {
     return (
       <div className="app-container">
         <div className="app-header">
-          <h1>📚 KORASENSE Knowledge Sync</h1>
+          <div className="header-logo">
+            <FontAwesomeIcon icon={faDiamond} />
+          </div>
+          <h1>KORASENSE FileSense</h1>
           <p>Connect to your knowledge base</p>
         </div>
         
@@ -266,6 +288,7 @@ function App() {
 
             <div className="form-group">
               <label className="form-label">
+                <FontAwesomeIcon icon={faServer} className="label-icon" />
                 Backend URL
               </label>
               <input
@@ -278,6 +301,7 @@ function App() {
 
             <div className="form-group">
               <label className="form-label">
+                <FontAwesomeIcon icon={faKey} className="label-icon" />
                 API Key
               </label>
               <input
@@ -293,6 +317,7 @@ function App() {
               onClick={handleLogin} 
               disabled={!authToken || !backendUrl || isLoading}
             >
+              <FontAwesomeIcon icon={isLoading ? faSpinner : faLink} className={isLoading ? 'fa-spin' : ''} />
               {isLoading ? 'Authenticating...' : 'Connect'}
             </button>
             
@@ -314,8 +339,14 @@ function App() {
   return (
     <div className="app-container">
       <div className="app-header">
-        <h1>📚 KORASENSE Knowledge Sync</h1>
-        <p>Tenant: {config?.tenant_slug || 'Unknown'}</p>
+        <div className="header-logo">
+          <FontAwesomeIcon icon={faDiamond} />
+        </div>
+        <h1>KORASENSE FileSense</h1>
+        <p>
+          <FontAwesomeIcon icon={faCheckCircle} className="status-icon-success" />
+          Connected to {config?.tenant_slug || 'Unknown'}
+        </p>
       </div>
 
       <div className="content-container">
@@ -324,12 +355,12 @@ function App() {
           <div className={`status-badge ${status.is_running ? 'status-running' : 'status-stopped'}`}>
             {status.is_running ? (
               <>
-                <span className="status-indicator status-indicator-active"></span>
-                Active
+                <FontAwesomeIcon icon={faCheckCircle} />
+                Watching
               </>
             ) : (
               <>
-                <span className="status-indicator status-indicator-inactive"></span>
+                <FontAwesomeIcon icon={faTimesCircle} />
                 Stopped
               </>
             )}
@@ -345,6 +376,7 @@ function App() {
               <div className="stat-label">Processed</div>
             </div>
             <div className="stat-item">
+              <FontAwesomeIcon icon={faFolder} className="stat-icon" />
               <div className="stat-value">{config?.folders.length || 0}</div>
               <div className="stat-label">Folders</div>
             </div>
@@ -373,15 +405,18 @@ function App() {
             {!status.is_running ? (
               <>
                 <button className="btn-success" onClick={handleStartWatching}>
-                  ▶️ Start Watching
+                  <FontAwesomeIcon icon={faPlay} />
+                  Start Watching
                 </button>
                 <button className="btn-primary" onClick={handleScanOnce}>
-                  🔄 Scan Once
+                  <FontAwesomeIcon icon={faSync} />
+                  Scan Once
                 </button>
               </>
             ) : (
               <button className="btn-warning" onClick={handleStopWatching}>
-                ⏹️ Stop
+                <FontAwesomeIcon icon={faStop} />
+                Stop Watching
               </button>
             )}
           </div>
@@ -390,9 +425,13 @@ function App() {
         {/* Folders Card */}
         <div className="card">
           <div className="flex-between mb-16">
-            <h3 className="card-title mb-0">Watched Folders</h3>
-            <button className="btn-primary" onClick={handleAddFolder}>
-              + Add
+            <h3 className="card-title mb-0">
+              <FontAwesomeIcon icon={faFolderOpen} className="title-icon" />
+              Watched Folders
+            </h3>
+            <button className="btn-primary btn-sm" onClick={handleAddFolder}>
+              <FontAwesomeIcon icon={faPlus} />
+              Add Folder
             </button>
           </div>
 
@@ -400,21 +439,22 @@ function App() {
             <ul className="folder-list">
               {config.folders.map((folder) => (
                 <li key={folder} className="folder-item">
+                  <FontAwesomeIcon icon={faFolder} className="folder-icon" />
                   <span className="folder-path">{folder}</span>
                   <button
                     className="folder-remove"
                     onClick={() => handleRemoveFolder(folder)}
                   >
-                    Remove
+                    <FontAwesomeIcon icon={faTimes} />
                   </button>
                 </li>
               ))}
             </ul>
           ) : (
             <div className="empty-state">
-              <div className="empty-state-icon">📂</div>
+              <FontAwesomeIcon icon={faFolderOpen} className="empty-state-icon" />
               <p className="empty-state-text">
-                No folders added yet. Click "Add" to start watching directories.
+                No folders added yet. Click "Add Folder" to start watching directories.
               </p>
             </div>
           )}
@@ -425,7 +465,8 @@ function App() {
           className="btn-secondary w-full" 
           onClick={handleLogout}
         >
-          Logout
+          <FontAwesomeIcon icon={faSignOutAlt} />
+          Disconnect
         </button>
       </div>
     </div>

@@ -11,58 +11,39 @@ export default async function HomePage() {
   }
   
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      background: 'var(--bg-primary)',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
       {/* Hero Section */}
-      <div style={{
-        position: 'relative',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        {/* Subtle accent glows */}
-        <div className="hidden md:block" style={{
-          position: 'absolute',
-          top: '-20%',
-          right: '-10%',
-          width: '600px',
-          height: '600px',
-          background: 'radial-gradient(circle, var(--accent-20) 0%, transparent 70%)',
-          filter: 'blur(80px)',
-          pointerEvents: 'none'
-        }} />
-        <div className="hidden md:block" style={{
-          position: 'absolute',
-          bottom: '-10%',
-          left: '-10%',
-          width: '500px',
-          height: '500px',
-          background: 'radial-gradient(circle, var(--accent-10) 0%, transparent 70%)',
-          filter: 'blur(80px)',
-          pointerEvents: 'none'
-        }} />
+      <div className="relative min-h-screen flex flex-col items-center justify-center">
+        {/* Subtle accent glows - Desktop only */}
+        <div className="hidden lg:block absolute -top-1/4 -right-1/10 w-[600px] h-[600px] pointer-events-none opacity-60" 
+             style={{
+               background: 'radial-gradient(circle, var(--accent-20) 0%, transparent 70%)',
+               filter: 'blur(80px)'
+             }} 
+        />
+        <div className="hidden lg:block absolute -bottom-1/10 -left-1/10 w-[500px] h-[500px] pointer-events-none opacity-40" 
+             style={{
+               background: 'radial-gradient(circle, var(--accent-10) 0%, transparent 70%)',
+               filter: 'blur(80px)'
+             }} 
+        />
         
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-center" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 text-center">
+          {/* Badge */}
           <div className="mb-6 sm:mb-8">
-            <span className="inline-block px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full" style={{
-              backgroundColor: 'var(--accent-10)',
-              border: '1px solid var(--accent-20)',
-              color: 'var(--accent)',
-            }}>
+            <span className="inline-block px-4 py-2 text-xs sm:text-sm font-semibold uppercase tracking-wide rounded-full" 
+                  style={{
+                    backgroundColor: 'var(--accent-10)',
+                    border: '1px solid var(--accent-20)',
+                    color: 'var(--accent)',
+                  }}>
               🚀 Powered by Gemini 2.0 Flash
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight" style={{ 
-            color: 'var(--text-primary)',
-            letterSpacing: '-0.03em',
-          }}>
+          {/* Hero Title */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-6 sm:mb-8 leading-tight tracking-tight" 
+              style={{ color: 'var(--text-primary)' }}>
             Your Company&apos;s Knowledge,
             <br />
             <span style={{ 
@@ -75,9 +56,9 @@ export default async function HomePage() {
             </span>
           </h1>
           
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed" style={{ 
-            color: 'var(--text-secondary)',
-          }}>
+          {/* Subtitle */}
+          <p className="text-lg sm:text-xl lg:text-2xl mb-10 sm:mb-12 max-w-3xl mx-auto leading-relaxed" 
+             style={{ color: 'var(--text-secondary)' }}>
             Multimodal, agentic knowledge management platform that ingests any data type 
             and delivers AI-powered insights through natural conversation.
           </p>
@@ -85,9 +66,9 @@ export default async function HomePage() {
           <HeroButtons />
 
           {/* Key Stats */}
-          <div className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8 mt-8 sm:mt-12 md:mt-16 max-w-2xl mx-auto">
+          <div className="grid grid-cols-3 gap-6 sm:gap-8 lg:gap-12 mt-12 sm:mt-16 max-w-2xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1" style={{ color: 'var(--accent)' }}>
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
                 6
               </div>
               <div className="text-xs sm:text-sm uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
@@ -95,7 +76,7 @@ export default async function HomePage() {
               </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1" style={{ color: 'var(--accent)' }}>
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
                 5-10s
               </div>
               <div className="text-xs sm:text-sm uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
@@ -103,7 +84,7 @@ export default async function HomePage() {
               </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1" style={{ color: 'var(--accent)' }}>
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
                 100%
               </div>
               <div className="text-xs sm:text-sm uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
@@ -264,27 +245,19 @@ export default async function HomePage() {
             </div>
 
             {/* Step 2 */}
-            <div className="card" style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
-              <div style={{
-                minWidth: '3rem',
-                height: '3rem',
-                borderRadius: '50%',
+            <div className="card flex gap-3 sm:gap-4 md:gap-6 items-start">
+              <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-base sm:text-lg font-bold" style={{
                 backgroundColor: 'var(--accent-10)',
                 border: '2px solid var(--accent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                fontWeight: 700,
                 color: 'var(--accent)'
               }}>
                 2
               </div>
-              <div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                   🔍 Retrieval & Gatekeeping
                 </h3>
-                <p className="text-secondary" style={{ lineHeight: 1.6 }}>
+                <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                   Your question is embedded and searched against the vector database. The Gatekeeper agent 
                   validates safety and clarity while relevant chunks are retrieved for analysis.
                 </p>
@@ -292,27 +265,19 @@ export default async function HomePage() {
             </div>
 
             {/* Step 3 */}
-            <div className="card" style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
-              <div style={{
-                minWidth: '3rem',
-                height: '3rem',
-                borderRadius: '50%',
+            <div className="card flex gap-3 sm:gap-4 md:gap-6 items-start">
+              <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-base sm:text-lg font-bold" style={{
                 backgroundColor: 'var(--accent-10)',
                 border: '2px solid var(--accent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                fontWeight: 700,
                 color: 'var(--accent)'
               }}>
                 3
               </div>
-              <div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                   🧠 Analysis & Synthesis
                 </h3>
-                <p className="text-secondary" style={{ lineHeight: 1.6 }}>
+                <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                   The Planner reviews evidence, the Analyst synthesizes insights, and the Auditor validates 
                   quality. Finally, the Writer crafts a polished, markdown-formatted answer with citations.
                 </p>
@@ -320,27 +285,19 @@ export default async function HomePage() {
             </div>
 
             {/* Step 4 */}
-            <div className="card" style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
-              <div style={{
-                minWidth: '3rem',
-                height: '3rem',
-                borderRadius: '50%',
+            <div className="card flex gap-3 sm:gap-4 md:gap-6 items-start">
+              <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-base sm:text-lg font-bold" style={{
                 backgroundColor: 'var(--accent-10)',
                 border: '2px solid var(--accent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                fontWeight: 700,
                 color: 'var(--accent)'
               }}>
                 4
               </div>
-              <div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                   ✨ Multimodal Enhancement
                 </h3>
-                <p className="text-secondary" style={{ lineHeight: 1.6 }}>
+                <p className="text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                   When images or videos are attached, Gemini Vision analyzes visual content and 
                   cross-references with your knowledge base for comprehensive, context-aware answers.
                 </p>

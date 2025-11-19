@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { UserButton } from '@clerk/nextjs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faBook, faComments, faDiamond, faDownload } from '@fortawesome/free-solid-svg-icons';
 
 interface NavigationProps {
   user: {
@@ -15,9 +17,13 @@ export default function Navigation({ user }: NavigationProps) {
   const pathname = usePathname();
   
   const navItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: '🏠' },
-    { href: '/knowledge', label: 'Documents', icon: '📚' },
-    { href: '/chat', label: 'Ask Questions', icon: '💬' },
+    { href: '/dashboard', label: 'Dashboard', icon: faHome },
+    { href: '/knowledge', label: 'Documents', icon: faBook },
+    { href: '/chat', label: 'Ask Questions', icon: faComments },
+    { href: '/downloads', label: 'Downloads', icon: faDownload },
+    // OPUS Workflows - Hidden for now
+    // { href: '/workflows', label: 'OPUS Workflows', icon: '⚙️' },
+    // { href: '/workflows/monitor', label: 'Monitor', icon: '📊' },
   ];
   
   return (
@@ -53,10 +59,11 @@ export default function Navigation({ user }: NavigationProps) {
                 letterSpacing: '-0.02em',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.5rem'
+                gap: '0.5rem',
+                textDecoration: 'none'
               }}
             >
-              <span style={{ fontSize: '1.5rem' }}>🔷</span>
+              <FontAwesomeIcon icon={faDiamond} style={{ fontSize: '1.25rem' }} />
               <span>KORASENSE</span>
             </Link>
             
@@ -94,7 +101,7 @@ export default function Navigation({ user }: NavigationProps) {
                     }
                   }}
                 >
-                  <span>{item.icon}</span>
+                  <FontAwesomeIcon icon={item.icon} style={{ fontSize: '0.875rem' }} />
                   <span>{item.label}</span>
                 </Link>
               ))}

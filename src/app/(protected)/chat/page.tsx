@@ -23,24 +23,30 @@ export default async function ChatPage() {
       <div style={{ 
         marginBottom: '2rem',
         paddingBottom: '1.5rem',
-        borderBottom: '1px solid var(--border)'
+        borderBottom: '1px solid var(--border)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        gap: '1rem'
       }}>
-        <h1 style={{ 
-          fontSize: '1.875rem', 
-          fontWeight: 700, 
-          marginBottom: '0.5rem',
-          color: 'var(--text-primary)',
-          letterSpacing: '-0.02em'
-        }}>
-          💬 Ask Questions
-        </h1>
-        <p style={{
-          color: 'var(--text-secondary)',
-          fontSize: '0.9375rem',
-          lineHeight: '1.6'
-        }}>
-          Ask questions about your company knowledge and get AI-powered answers with citations
-        </p>
+        <div>
+          <h1 style={{ 
+            fontSize: '1.875rem', 
+            fontWeight: 700, 
+            marginBottom: '0.5rem',
+            color: 'var(--text-primary)',
+            letterSpacing: '-0.02em'
+          }}>
+            💬 Ask Questions
+          </h1>
+          <p style={{
+            color: 'var(--text-secondary)',
+            fontSize: '0.9375rem',
+            lineHeight: '1.6'
+          }}>
+            Ask questions about your company knowledge and get AI-powered answers with citations
+          </p>
+        </div>
       </div>
 
       <DemoConsole 

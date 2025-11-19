@@ -5,6 +5,27 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faBolt, 
+  faBrain, 
+  faGlobe, 
+  faTrash, 
+  faPaperclip, 
+  faPaperPlane,
+  faComments,
+  faRobot,
+  faBook,
+  faCertificate,
+  faFlask,
+  faTimes,
+  faBriefcase,
+  faChartLine,
+  faBullseye,
+  faChartSimple,
+  faShield,
+  faUsers
+} from '@fortawesome/free-solid-svg-icons';
 import AgentTimeline from '../risk/AgentTimeline';
 
 interface Message {
@@ -15,6 +36,8 @@ interface Message {
   qualityScore?: number;
   timestamp: Date;
   files?: Array<{ name: string; type: string; size: number }>;
+  mode?: 'standard' | 'deep' | 'web';
+  usedWebSearch?: boolean;
 }
 
 interface DemoConsoleProps {
@@ -33,6 +56,20 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
   const [currentTrace, setCurrentTrace] = useState<any>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Enhanced reasoning modes
+  const [mode, setMode] = useState<'standard' | 'deep' | 'web'>('standard');
+  const [useWebSearch, setUseWebSearch] = useState(false);
+  const [showModeSelector, setShowModeSelector] = useState(false);
+  
+  // Clear conversation handler
+  const handleClearConversation = () => {
+    if (messages.length > 0 && confirm('Clear all messages? This cannot be undone.')) {
+      setMessages([]);
+      setSelectedMessageTrace(null);
+      setCurrentTrace(null);
+    }
+  };
   const [messages, setMessages] = useState<Message[]>(() => {
     // Convert initial history to messages format
     return initialHistory.flatMap((item, idx) => [
@@ -113,13 +150,38 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
     ];
   });
 
-  const presetQuestions = [
-    'What are our company policies on remote work?',
-    'Summarize the Q3 financial results',
-    'What products does our company offer?',
-  ];
-
-  useEffect(() => {
+  const examplePrompts = [
+    {
+      icon: 'briefcase',
+      title: 'Company Policies',
+      prompt: 'What are our company policies on remote work and flexible schedules?'
+    },
+    {
+      icon: 'chart-line',
+      title: 'Financial Data',
+      prompt: 'Summarize our Q3 financial performance and key metrics'
+    },
+    {
+      icon: 'bullseye',
+      title: 'Product Info',
+      prompt: 'What products and services does our company offer to customers?'
+    },
+    {
+      icon: 'chart-simple',
+      title: 'Market Analysis',
+      prompt: 'What are the current market trends affecting our industry?'
+    },
+    {
+      icon: 'shield',
+      title: 'Security Policies',
+      prompt: 'What are our data security and privacy protection policies?'
+    },
+    {
+      icon: 'users',
+      title: 'Team Structure',
+      prompt: 'Describe our organizational structure and reporting lines'
+    },
+  ];  useEffect(() => {
     // Auto-scroll to bottom when new messages arrive
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
@@ -223,6 +285,8 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
         const formData = new FormData();
         formData.append('tenant_slug', tenantSlug);
         formData.append('question', currentQuestion);
+        formData.append('mode', mode);
+        formData.append('useWebSearch', useWebSearch.toString());
         currentFiles.forEach((file, index) => {
           formData.append(`file${index}`, file);
         });
@@ -240,6 +304,8 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
           body: JSON.stringify({
             tenant_slug: tenantSlug,
             question: currentQuestion,
+            mode: mode,
+            useWebSearch: useWebSearch,
           }),
         });
       }
@@ -270,6 +336,8 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
         trace: data.trace,
         qualityScore: data.quality_score,
         timestamp: new Date(),
+        mode: data.mode || mode,
+        usedWebSearch: data.used_web_search || useWebSearch,
       };
       
       setMessages(prev => [...prev, assistantMessage]);
@@ -329,15 +397,86 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
               <div style={{ 
                 textAlign: 'center', 
                 padding: 'var(--spacing-2xl)',
-                color: 'var(--text-tertiary)'
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '400px'
               }}>
-                <div style={{ fontSize: '3rem', marginBottom: 'var(--spacing-md)' }}>💬</div>
-                <p style={{ fontSize: '1.125rem', fontWeight: 500, marginBottom: 'var(--spacing-xs)' }}>
-                  Start a Conversation
+                <div style={{ 
+                  fontSize: '3.5rem', 
+                  marginBottom: 'var(--spacing-lg)',
+                  color: 'var(--accent)'
+                }}>
+                  <FontAwesomeIcon icon={faComments} />
+                </div>
+                <h2 style={{ 
+                  fontSize: '1.5rem', 
+                  fontWeight: 700, 
+                  marginBottom: 'var(--spacing-sm)',
+                  color: 'var(--text-primary)',
+                  letterSpacing: '-0.02em'
+                }}>
+                  Ask Anything About Your Knowledge Base
+                </h2>
+                <p style={{ 
+                  fontSize: '0.9375rem',
+                  color: 'var(--text-secondary)',
+                  maxWidth: '500px',
+                  lineHeight: '1.6',
+                  marginBottom: 'var(--spacing-lg)'
+                }}>
+                  Get AI-powered answers with citations from your documents. Upload files, ask complex questions, and explore your company knowledge with our advanced agent pipeline.
                 </p>
-                <p style={{ fontSize: '0.875rem' }}>
-                  Ask questions about your company knowledge
-                </p>
+                <div style={{
+                  display: 'flex',
+                  gap: 'var(--spacing-md)',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 'var(--spacing-xs)',
+                    padding: '0.5rem 1rem',
+                    backgroundColor: 'var(--accent-5)',
+                    borderRadius: 'var(--radius-full)',
+                    fontSize: '0.875rem',
+                    color: 'var(--accent)',
+                    fontWeight: 500
+                  }}>
+                    <FontAwesomeIcon icon={faRobot} />
+                    <span>Multi-Agent AI</span>
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 'var(--spacing-xs)',
+                    padding: '0.5rem 1rem',
+                    backgroundColor: 'var(--accent-5)',
+                    borderRadius: 'var(--radius-full)',
+                    fontSize: '0.875rem',
+                    color: 'var(--accent)',
+                    fontWeight: 500
+                  }}>
+                    <FontAwesomeIcon icon={faPaperclip} />
+                    <span>Document Upload</span>
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 'var(--spacing-xs)',
+                    padding: '0.5rem 1rem',
+                    backgroundColor: 'var(--accent-5)',
+                    borderRadius: 'var(--radius-full)',
+                    fontSize: '0.875rem',
+                    color: 'var(--accent)',
+                    fontWeight: 500
+                  }}>
+                    <FontAwesomeIcon icon={faBook} />
+                    <span>Smart Citations</span>
+                  </div>
+                </div>
               </div>
             )}
             
@@ -445,6 +584,53 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
                     </div>
                   )}
                   
+                  {/* Mode and Web Search Indicators */}
+                  {(message.mode || message.usedWebSearch) && (
+                    <div style={{
+                      marginTop: 'var(--spacing-sm)',
+                      display: 'flex',
+                      gap: 'var(--spacing-xs)',
+                      flexWrap: 'wrap'
+                    }}>
+                      {message.mode === 'deep' && (
+                        <div style={{
+                          padding: '0.25rem 0.5rem',
+                          backgroundColor: 'var(--accent-10)',
+                          color: 'var(--accent)',
+                          fontSize: '0.6875rem',
+                          fontWeight: 600,
+                          borderRadius: 'var(--radius-md)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em'
+                        }}>
+                          <FontAwesomeIcon icon={faBrain} style={{ fontSize: '0.75rem' }} />
+                          <span>Deep Reasoning</span>
+                        </div>
+                      )}
+                      {message.usedWebSearch && (
+                        <div style={{
+                          padding: '0.25rem 0.5rem',
+                          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                          color: '#3B82F6',
+                          fontSize: '0.6875rem',
+                          fontWeight: 600,
+                          borderRadius: 'var(--radius-md)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em'
+                        }}>
+                          <FontAwesomeIcon icon={faGlobe} style={{ fontSize: '0.75rem' }} />
+                          <span>Web Enhanced</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
                   {message.trace && (
                     <div style={{
                       marginTop: 'var(--spacing-sm)',
@@ -456,7 +642,7 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
                       fontSize: '0.75rem',
                       color: 'var(--accent)'
                     }}>
-                      <span>🔬</span>
+                      <FontAwesomeIcon icon={faFlask} />
                       <span>View Agent Pipeline</span>
                     </div>
                   )}
@@ -523,6 +709,131 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
         {/* Input Area */}
         <div className="card">
           <form onSubmit={handleSubmit}>
+            {/* Mode Selector & Web Search Toggle */}
+            <div style={{ 
+              marginBottom: 'var(--spacing-md)',
+              display: 'flex',
+              gap: 'var(--spacing-sm)',
+              flexWrap: 'wrap',
+              alignItems: 'center'
+            }}>
+              <div style={{ 
+                display: 'flex',
+                gap: 'var(--spacing-xs)',
+                flex: 1
+              }}>
+                <button
+                  type="button"
+                  onClick={() => setMode('standard')}
+                  disabled={loading}
+                  style={{
+                    padding: '0.5rem 0.875rem',
+                    backgroundColor: mode === 'standard' ? 'var(--accent)' : 'var(--bg-elevated)',
+                    color: mode === 'standard' ? '#FFFFFF' : 'var(--text-secondary)',
+                    border: `1px solid ${mode === 'standard' ? 'var(--accent)' : 'var(--border)'}`,
+                    borderRadius: 'var(--radius-md)',
+                    cursor: 'pointer',
+                    fontSize: '0.8125rem',
+                    fontWeight: 500,
+                    transition: 'all 0.15s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.375rem'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (mode !== 'standard') {
+                      e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (mode !== 'standard') {
+                      e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faBolt} />
+                  <span>Standard</span>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => setMode('deep')}
+                  disabled={loading}
+                  style={{
+                    padding: '0.5rem 0.875rem',
+                    backgroundColor: mode === 'deep' ? 'var(--accent)' : 'var(--bg-elevated)',
+                    color: mode === 'deep' ? '#FFFFFF' : 'var(--text-secondary)',
+                    border: `1px solid ${mode === 'deep' ? 'var(--accent)' : 'var(--border)'}`,
+                    borderRadius: 'var(--radius-md)',
+                    cursor: 'pointer',
+                    fontSize: '0.8125rem',
+                    fontWeight: 500,
+                    transition: 'all 0.15s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.375rem'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (mode !== 'deep') {
+                      e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (mode !== 'deep') {
+                      e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faBrain} />
+                  <span>Deep Reasoning</span>
+                </button>
+              </div>
+              
+              <div style={{ 
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--spacing-xs)',
+                padding: '0.5rem 0.875rem',
+                backgroundColor: useWebSearch ? 'var(--accent-10)' : 'var(--bg-elevated)',
+                border: `1px solid ${useWebSearch ? 'var(--accent-20)' : 'var(--border)'}`,
+                borderRadius: 'var(--radius-md)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              onClick={() => setUseWebSearch(!useWebSearch)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = useWebSearch ? 'var(--accent-20)' : 'var(--bg-secondary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = useWebSearch ? 'var(--accent-10)' : 'var(--bg-elevated)';
+              }}
+              >
+                <input
+                  type="checkbox"
+                  checked={useWebSearch}
+                  onChange={(e) => setUseWebSearch(e.target.checked)}
+                  disabled={loading}
+                  style={{
+                    width: '16px',
+                    height: '16px',
+                    cursor: 'pointer',
+                    accentColor: 'var(--accent)'
+                  }}
+                />
+                <FontAwesomeIcon 
+                  icon={faGlobe} 
+                  style={{ fontSize: '0.875rem' }}
+                />
+                <span style={{
+                  fontSize: '0.8125rem',
+                  fontWeight: 500,
+                  color: useWebSearch ? 'var(--accent)' : 'var(--text-secondary)'
+                }}>
+                  Web Search
+                </span>
+              </div>
+            </div>
+            
             {/* File upload preview */}
             {uploadedFiles.length > 0 && (
               <div style={{ 
@@ -574,7 +885,7 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
               </div>
             )}
 
-            <div style={{ display: 'flex', gap: 'var(--spacing-sm)' }}>
+            <div style={{ display: 'flex', gap: 'var(--spacing-sm)', alignItems: 'center' }}>
               {/* Hidden file input */}
               <input
                 ref={fileInputRef}
@@ -586,6 +897,20 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
                 aria-label="Upload files"
               />
               
+              {/* Clear conversation button */}
+              {messages.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleClearConversation}
+                  className="btn-secondary"
+                  disabled={loading}
+                  title="Clear conversation"
+                  style={{ padding: '0.625rem' }}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              )}
+              
               {/* File upload button */}
               <button
                 type="button"
@@ -593,8 +918,9 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
                 className="btn-secondary"
                 disabled={loading}
                 title="Attach image, video, or document"
+                style={{ padding: '0.625rem' }}
               >
-                📎
+                <FontAwesomeIcon icon={faPaperclip} />
               </button>
 
               <input
@@ -614,34 +940,101 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
                 type="submit"
                 disabled={loading || !question.trim()}
                 className="btn-primary"
+                style={{ padding: '0.625rem 1.25rem' }}
               >
-                {loading ? '⏳' : '→'}
+                {loading ? '...' : <FontAwesomeIcon icon={faPaperPlane} />}
               </button>
             </div>
             
             {messages.length === 0 && (
-              <div style={{ 
-                marginTop: 'var(--spacing-md)', 
-                display: 'flex', 
-                flexWrap: 'wrap', 
-                gap: 'var(--spacing-xs)' 
-              }}>
-                {presetQuestions.map((preset, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setQuestion(preset)}
-                    className="btn-secondary"
-                    style={{
-                      fontSize: '0.8125rem',
-                      padding: '0.375rem 0.875rem',
-                      borderRadius: '9999px',
-                    }}
-                    disabled={loading}
-                  >
-                    {preset}
-                  </button>
-                ))}
+              <div style={{ marginTop: 'var(--spacing-md)' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 'var(--spacing-sm)'
+                }}>
+                  <div style={{ 
+                    fontSize: '0.75rem', 
+                    fontWeight: 600, 
+                    color: 'var(--text-tertiary)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em'
+                  }}>
+                    ✨ Try these examples
+                  </div>
+                </div>
+                <div style={{ 
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                  gap: 'var(--spacing-sm)'
+                }}>
+                  {examplePrompts.map((example, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setQuestion(example.prompt)}
+                      disabled={loading}
+                      style={{
+                        padding: 'var(--spacing-md)',
+                        backgroundColor: 'var(--bg-elevated)',
+                        border: '1px solid var(--border)',
+                        borderRadius: 'var(--radius-md)',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        textAlign: 'left',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 'var(--spacing-xs)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                        e.currentTarget.style.borderColor = 'var(--accent-20)';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
+                        e.currentTarget.style.borderColor = 'var(--border)';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                    >
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 'var(--spacing-xs)'
+                      }}>
+                        <FontAwesomeIcon 
+                          icon={
+                            example.icon === 'briefcase' ? faBriefcase :
+                            example.icon === 'chart-line' ? faChartLine :
+                            example.icon === 'bullseye' ? faBullseye :
+                            example.icon === 'chart-simple' ? faChartSimple :
+                            example.icon === 'shield' ? faShield :
+                            example.icon === 'users' ? faUsers :
+                            faComments
+                          }
+                          style={{ fontSize: '1.25rem', color: 'var(--accent)' }}
+                        />
+                        <span style={{
+                          fontSize: '0.875rem',
+                          fontWeight: 600,
+                          color: 'var(--text-primary)'
+                        }}>
+                          {example.title}
+                        </span>
+                      </div>
+                      <div style={{
+                        fontSize: '0.8125rem',
+                        color: 'var(--text-secondary)',
+                        lineHeight: '1.4'
+                      }}>
+                        {example.prompt}
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </form>
@@ -683,7 +1076,7 @@ export default function DemoConsole({ tenantSlug, initialHistory = [] }: DemoCon
                   fontSize: '0.875rem'
                 }}
               >
-                ✕
+                <FontAwesomeIcon icon={faTimes} />
               </button>
             </div>
           </div>
