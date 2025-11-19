@@ -318,16 +318,6 @@ export default async function HomePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          <div className="card text-center">
-            <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>⚛️</div>
-            <h4 style={{ fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-              Next.js 14
-            </h4>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)' }}>
-              App Router, Server Components, TypeScript
-            </p>
-          </div>
 
           <div className="card text-center">
             <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>🤖</div>
@@ -359,47 +349,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="card text-center">
-            <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>💾</div>
-            <h4 style={{ fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-              PostgreSQL
-            </h4>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)' }}>
-              Prisma ORM, Relational Data
-            </p>
-          </div>
-
-          <div className="card text-center">
-            <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>🎨</div>
-            <h4 style={{ fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-              Tailwind CSS
-            </h4>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)' }}>
-              Modern UI, Custom Design System
-            </p>
-          </div>
-
-          <div className="card text-center">
-            <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>🦀</div>
-            <h4 style={{ fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-              Rust
-            </h4>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)' }}>
-              Edge Sense Apps, File Watching
-            </p>
-          </div>
-
-          <div className="card text-center">
-            <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>☁️</div>
-            <h4 style={{ fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-              Vercel
-            </h4>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)' }}>
-              Deployment, Edge Network
-            </p>
-          </div>
         </div>
-      </div>
 
       {/* Use Cases Section */}
       <div className="py-12 sm:py-16 md:py-20 px-4 sm:px-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
@@ -487,7 +437,7 @@ export default async function HomePage() {
       {/* Footer */}
       <div className="border-t px-4 sm:px-6 py-6 sm:py-8 text-center" style={{ borderColor: 'var(--border)' }}>
         <p className="text-xs sm:text-sm" style={{ color: 'var(--text-tertiary)' }}>
-          © 2025 KORASENSE Knowledge App. Built with ❤️ using Next.js, Gemini AI, and Qdrant.
+          © 2025 KORASENSE Knowledge App. Built with ❤️ using Gemini AI, and Qdrant by Kanaktic.
         </p>
       </div>
     </div>
